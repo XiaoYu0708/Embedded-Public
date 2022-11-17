@@ -4,8 +4,8 @@
 
 #define USE_SERIAL Serial
 
-char ssid[] = "C306-34 2917";
-char password[] = "12345678";
+char ssid[] = "WTY";
+char password[] = "A940812A";
 char url[] = "https://data.epa.gov.tw/api/v2/aqx_p_02?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=datacreationdate%20desc&format=JSON";
 void setup() {
   // put your setup code here, to run once:
@@ -80,6 +80,7 @@ void loop() {
       const char* record_datacreationdate = record["datacreationdate"]; // "2022-11-17 17:00", "2022-11-17 ...
       const char* record_itemunit = record["itemunit"]; // "μg/m3", "μg/m3", "μg/m3", "μg/m3", "μg/m3", ...
       if(record["site"]=="臺南"){
+        Serial.print("PM2.5：");
         Serial.println(record_pm25);
       }
     }
