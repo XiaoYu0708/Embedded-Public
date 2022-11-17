@@ -93,6 +93,7 @@ void loop() {
         } else if (PM >= 0) {
           Serial.println("等級為綠色");
         }
+        Serial.println();
       }
     }
   }
