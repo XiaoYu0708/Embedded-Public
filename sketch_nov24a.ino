@@ -52,7 +52,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println("啟動網頁連線");
+  if(f == 0)
+    Serial.println("啟動網頁連線");
   HTTPClient http;
   http.begin(url);
   int httpCode = http.GET();
@@ -113,7 +114,9 @@ void loop() {
       i++;
     }
     http.end();
-    Serial.println("資料存取完成");
+    if(f == 0)
+      Serial.println("資料存取完成");
+    f = 1;
   }
 }
 void Color(int R, int G, int B) {
