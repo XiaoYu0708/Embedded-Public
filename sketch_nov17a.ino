@@ -1,13 +1,22 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
+#include <analogWrite.h>
+
+#define LEDB 17
+#define LEDR 16
+#define LEDG 4
 
 #define USE_SERIAL Serial
 
 char ssid[] = "WTY";
 char password[] = "A940812A";
 char url[] = "https://data.epa.gov.tw/api/v2/aqx_p_02?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=datacreationdate%20desc&format=JSON";
+
 void setup() {
+  pinMode(LEDB,OUTPUT);
+  pinMode(LEDR,OUTPUT);
+  pinMode(LEDG,OUTPUT);
   // put your setup code here, to run once:
   Serial.begin(115200);
   delay(1000);
@@ -84,14 +93,19 @@ void loop() {
         Serial.println(record_pm25);
         if (PM >= 251) {
           Serial.println("等級為紫色");
+          Color(128,0,128);
         } else if (PM >= 55) {
           Serial.println("等級為紅色");
+          Color(128,0,0);
         } else if (PM >= 36) {
           Serial.println("等級為橘色");
+          Color(210,100,0);
         } else if (PM >= 16) {
           Serial.println("等級為黃色");
+          Color(200,200,20);
         } else if (PM >= 0) {
           Serial.println("等級為綠色");
+          Color(0,128,0);
         }
         Serial.println();
       }
@@ -100,3 +114,10 @@ void loop() {
   http.end();
   delay(10000);
 }
+
+void Color(int R,int G,int B){
+  analogWrite(LEDR,R);
+  analogWrite(LEDG,G);
+  analogWrite(LEDB,B);
+}
+
