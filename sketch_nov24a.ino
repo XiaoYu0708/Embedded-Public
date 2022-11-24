@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(f == 0)
+  if (f == 0)
     Serial.println("啟動網頁連線");
   HTTPClient http;
   http.begin(url);
@@ -114,7 +114,7 @@ void loop() {
       i++;
     }
     http.end();
-    if(f == 0)
+    if (f == 0)
       Serial.println("資料存取完成");
     f = 1;
   }
@@ -153,4 +153,3 @@ void P(int i) {
   }
   Serial.println();
 }
-
