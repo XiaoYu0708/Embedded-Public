@@ -2,6 +2,8 @@
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
 #include <analogWrite.h>
+#include <CString>
+#include <iostream>
 
 #define button 14
 
@@ -14,10 +16,13 @@
 char ssid[] = "WTY";
 char password[] = "A940812A";
 char url[] = "https://data.epa.gov.tw/api/v2/aqx_p_02?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=datacreationdate%20desc&format=JSON";
-
+String saveName[77];
+String saveSide[77];
+int savePM[77];
 int new_view, f = 0, z = 0;
 
 void ISR() {
+  P(z);
   z++;
   if (z >= 77) {
     z = 0;
@@ -46,19 +51,18 @@ void setup() {
 }
 
 void loop() {
-  f = 0;
   // put your main code here, to run repeatedly:
   Serial.println("啟動網頁連線");
   HTTPClient http;
   http.begin(url);
   int httpCode = http.GET();
-  Serial.print("httpCode=");
-  Serial.println(httpCode);
+  //Serial.print("httpCode=");
+  //Serial.println(httpCode);
 
   if (httpCode == HTTP_CODE_OK) {
     String payload = http.getString();
-    Serial.print("payload=");
-    Serial.println(payload.length());
+    //Serial.print("payload=");
+    //Serial.println(payload.length());
     //USE_SERIAL.println(payload);
     // String input;
 
@@ -93,6 +97,7 @@ void loop() {
     const char* links_start = doc["_links"]["start"];
     const char* links_next = doc["_links"]["next"];
 
+    int i = 0;
     for (JsonObject record : doc["records"].as<JsonArray>()) {
 
       const char* record_site = record["site"];                          // "大城", "富貴角", "麥寮", "關山", "馬公", "金門", "馬祖", "埔里", "復興", ...
@@ -102,40 +107,47 @@ void loop() {
       const char* record_itemunit = record["itemunit"];                  // "μg/m3", "μg/m3", "μg/m3", "μg/m3", "μg/m3", ...
       int PM = atoi(record_pm25);
 
-      if (f == z) {
-        Serial.print("地區為：");
-        Serial.print(record_site);
-        Serial.print("，");
-        Serial.println(record_county);
-        Serial.print("PM2.5：");
-        Serial.println(record_pm25);
-        if (PM >= 251) {
-          Serial.println("等級為紫色");
-          Color(128, 0, 128);
-        } else if (PM >= 55) {
-          Serial.println("等級為紅色");
-          Color(128, 0, 0);
-        } else if (PM >= 36) {
-          Serial.println("等級為橘色");
-          Color(210, 100, 0);
-        } else if (PM >= 16) {
-          Serial.println("等級為黃色");
-          Color(200, 200, 20);
-        } else if (PM >= 0) {
-          Serial.println("等級為綠色");
-          Color(0, 128, 0);
-        }
-        Serial.println();
-      }
-      f++;
+      saveName[i] = record_site;
+      saveSide[i] = record_county;
+      savePM[i] = atoi(record_pm25);
+      i++;
     }
+    http.end();
+    Serial.println("資料存取完成");
   }
-  http.end();
 }
-
 void Color(int R, int G, int B) {
   analogWrite(LEDR, R);
   analogWrite(LEDG, G);
   analogWrite(LEDB, B);
+}
+void P(int i) {
+  Serial.print("第");
+  Serial.print(i + 1);
+  Serial.println("筆資料");
+  Serial.print("地區為：");
+  Serial.print(saveName[i]);
+  Serial.print("，");
+  Serial.println(saveSide[i]);
+  Serial.print("PM2.5：");
+  Serial.println(savePM[i]);
+  int PM = savePM[i];
+  if (PM >= 251) {
+    Serial.println("等級為紫色");
+    Color(128, 0, 128);
+  } else if (PM >= 55) {
+    Serial.println("等級為紅色");
+    Color(128, 0, 0);
+  } else if (PM >= 36) {
+    Serial.println("等級為橘色");
+    Color(210, 100, 0);
+  } else if (PM >= 16) {
+    Serial.println("等級為黃色");
+    Color(200, 200, 20);
+  } else if (PM >= 0) {
+    Serial.println("等級為綠色");
+    Color(0, 128, 0);
+  }
+  Serial.println();
 }
 
