@@ -1,4 +1,4 @@
-# Embedded 嵌入式程式設計
+# Embedded 嵌入式程式設計(Public)
 - [esp32](https://zh.m.wikipedia.org/zh-tw/ESP32)
 ## 📂目錄
 >- [🪑上課](#上課)
