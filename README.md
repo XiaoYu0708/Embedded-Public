@@ -8,7 +8,7 @@
 ### 🪑上課
 >- [溫溼度(DHT11)資料上傳到Thingspeak (2022/11/17)](https://github.com/XiaoYu0708/Embedded/tree/WriteSingleFields)
 >- [Thingspeak資料讀取 (2022/11/17)](https://github.com/XiaoYu0708/Embedded/tree/ReadMultipleFields)
-
+>- [讓子彈飛_相撞會消失_code](https://github.com/XiaoYu0708/Embedded-Public/tree/%E8%AE%93%E5%AD%90%E5%BD%88%E9%A3%9B_%E7%9B%B8%E6%92%9E%E6%9C%83%E6%B6%88%E5%A4%B1_code)
 
 [📍TOP](#目錄)
 ### 📙作業
